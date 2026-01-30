@@ -6,15 +6,17 @@
 #include <iostream> // Biblioteca estándar para entrada y salida
 #include <omp.h>	// Biblioteca de OpenMP usada para la programación paralela
 #include <vector>	// Biblioteca para poder utilizar la clase vector
+#include <cstdlib>  // Biblioteca que permite usar rand() y srand()
+#include <ctime>    // Biblioteca que permite usar time() para semilla aleatoria
 using namespace std;
 
 // Declaración de las constantes
 #define CHUNK 100 // Tamaño del bloque de iteraciones asignado a cada hilo
-#define SHOW 10 // Cantidad de elementos a mostrar
+#define SHOW 10 // Cantidad de elementos a mostrar al imprimir los datos
 
 //Función que imprime los elementos del arreglo o vector
 void imprimirVector(const vector<int> &d) {
-	int limite = (int)min((size_t)SHOW, d.size());
+	int limite = min((int)d.size(), SHOW);
 	for (int i = 0; i < limite; i++) {
 		cout << d[i] << " - ";
 	}
@@ -37,6 +39,9 @@ int main(){
 		return 0;
 	}
 
+	// Inicializa la semilla para números aleatorios
+	srand(time(NULL));
+
 	cout << endl;
 
 	// Verificación de soporte OpenMP en tiempo de compilación
@@ -49,10 +54,11 @@ int main(){
 	// Vectores dinámicos (tamaño definido por el usuario)
 	vector<int> a(n), b(n), c(n);
 
-	// Inicializa los vectores a y b con números específicos
-	for (int i = 0; i < n; i++) { 
-		a[i] = i * 5;
-		b[i] = (i + 10) * 3;
+	// Llena los vectores con valores aleatorios
+	// rand()%100 genera números entre 0 y 99
+	for (int i = 0; i < n; i++) {
+		a[i] = rand() % 100;   // valores aleatorios para A
+		b[i] = rand() % 100;   // valores aleatorios para B
 	}
 
 	// Variable que define el tamaño de los bloques de trabajo
@@ -82,4 +88,5 @@ int main(){
 
 	return 0;
 }
+
 
